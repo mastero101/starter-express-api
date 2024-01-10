@@ -102,7 +102,7 @@ app.get('/rams', (req, res) => {
 });
 
 app.get('/almacenamientos', (req, res) => {
-    pool.query("SELECT modelo, precio, tienda, url, ing, consumo FROM componentes WHERE tipo = 'almacenamiento'", (error, results, fields) => { 
+    pool.query("SELECT modelo, precio, tienda, url, img, consumo FROM componentes WHERE tipo = 'almacenamiento'", (error, results, fields) => { 
         if (error) {
             console.error('Error al obtener datos de la base de datos:', error);
             res.status(500).send('Error al obtener datos de la base de datos.');
