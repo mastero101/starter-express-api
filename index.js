@@ -243,6 +243,6 @@ app.delete('/:id', (req, res) => {
     });
 });
 
-http.createServer(app).listen(3000, '0.0.0.0', () => {
+app.listen(3000, '0.0.0.0', () => {
     console.log('Servidor escuchando en el puerto 3000.');
 });
