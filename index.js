@@ -35,7 +35,7 @@ app.use(function(req, res, next) {
 });
 
 app.get('/', (req, res) => {
-    mysql.query('SELECT * FROM componentes', (error, results, fields) => {
+    connection.query('SELECT * FROM componentes', (error, results, fields) => {
         if (error) {
             console.error('Error al obtener datos de la base de datos:', error);
             res.status(500).send('Error al obtener datos de la base de datos.');
@@ -47,7 +47,7 @@ app.get('/', (req, res) => {
 
 app.get('/usuarios/:id', (req, res) => {
     const id = req.params.id;
-    mysql.query('SELECT * FROM componentes WHERE id = ?', id, (error, results, fields) => {
+    connection.query('SELECT * FROM componentes WHERE id = ?', id, (error, results, fields) => {
       if (error) {
         console.error('Error al obtener datos de la base de datos:', error);
         res.status(500).send('Error al obtener datos de la base de datos.');
@@ -65,7 +65,7 @@ app.get('/modelo/:modelo', (req, res) => {
     const modelo = req.params.modelo;
     const query = 'SELECT * FROM componentes WHERE modelo LIKE ?';
     const searchTerm = `%${modelo}%`;
-    mysql.query(query, searchTerm, (error, results, fields) => {
+    connection.query(query, searchTerm, (error, results, fields) => {
       if (error) {
         console.error('Error al obtener datos de la base de datos:', error);
         res.status(500).send('Error al obtener datos de la base de datos.');
@@ -80,7 +80,7 @@ app.get('/modelo/:modelo', (req, res) => {
 });
 
 app.get('/procesadores', (req, res) => {
-    mysql.query("SELECT modelo, precio, tienda, url, img, consumo, socket FROM componentes WHERE tipo = 'procesador'", (error, results, fields) => {
+    connection.query("SELECT modelo, precio, tienda, url, img, consumo, socket FROM componentes WHERE tipo = 'procesador'", (error, results, fields) => {
         if (error) {
             console.error('Error al obtener datos de la base de datos:', error);
             res.status(500).send('Error al obtener datos de la base de datos.');
@@ -91,7 +91,7 @@ app.get('/procesadores', (req, res) => {
 });
 
 app.get('/motherboards', (req, res) => {
-    mysql.query("SELECT modelo, precio, tienda, url, consumo, socket, img, rams FROM componentes WHERE tipo = 'motherboard'", (error, results, fields) => { 
+    connection.query("SELECT modelo, precio, tienda, url, consumo, socket, img, rams FROM componentes WHERE tipo = 'motherboard'", (error, results, fields) => { 
         if (error) {
             console.error('Error al obtener datos de la base de datos:', error);
             res.status(500).send('Error al obtener datos de la base de datos.');
@@ -102,7 +102,7 @@ app.get('/motherboards', (req, res) => {
 });
 
 app.get('/rams', (req, res) => {
-    mysql.query("SELECT modelo, precio, tienda, url, img, consumo, rams FROM componentes WHERE tipo = 'ram'", (error, results, fields) => {
+    connection.query("SELECT modelo, precio, tienda, url, img, consumo, rams FROM componentes WHERE tipo = 'ram'", (error, results, fields) => {
         if (error) {
             console.error('Error al obtener datos de la base de datos:', error);
             res.status(500).send('Error al obtener datos de la base de datos.');
@@ -113,7 +113,7 @@ app.get('/rams', (req, res) => {
 });
 
 app.get('/almacenamientos', (req, res) => {
-    mysql.query("SELECT modelo, precio, tienda, url, ing, consumo FROM componentes WHERE tipo = 'almacenamiento'", (error, results, fields) => { 
+    connection.query("SELECT modelo, precio, tienda, url, ing, consumo FROM componentes WHERE tipo = 'almacenamiento'", (error, results, fields) => { 
         if (error) {
             console.error('Error al obtener datos de la base de datos:', error);
             res.status(500).send('Error al obtener datos de la base de datos.');
@@ -124,7 +124,7 @@ app.get('/almacenamientos', (req, res) => {
 });
 
 app.get('/disipadores', (req, res) => {
-    mysql.query("SELECT modelo, precio, tienda, url, img, consumo FROM componentes WHERE tipo = 'disipador'", (error, results, fields) => {
+    connection.query("SELECT modelo, precio, tienda, url, img, consumo FROM componentes WHERE tipo = 'disipador'", (error, results, fields) => {
         if (error) {
             console.error('Error al obtener datos de la base de datos:', error);
             res.status(500).send('Error al obtener datos de la base de datos.');
@@ -135,7 +135,7 @@ app.get('/disipadores', (req, res) => {
 });
 
 app.get('/fuentes', (req, res) => {
-    mysql.query("SELECT modelo, precio, tienda, url, consumo, img, potencia FROM componentes WHERE tipo = 'psu'", (error, results, fields) => {
+    connection.query("SELECT modelo, precio, tienda, url, consumo, img, potencia FROM componentes WHERE tipo = 'psu'", (error, results, fields) => {
         if (error) {
             console.error('Error al obtener datos de la base de datos:', error);
             res.status(500).send('Error al obtener datos de la base de datos.');
@@ -146,7 +146,7 @@ app.get('/fuentes', (req, res) => {
 });
 
 app.get('/graficas', (req, res) => {
-    mysql.query("SELECT modelo, precio, tienda, url, img, consumo FROM componentes WHERE tipo = 'gpu'", (error, results, fields) => {
+    connection.query("SELECT modelo, precio, tienda, url, img, consumo FROM componentes WHERE tipo = 'gpu'", (error, results, fields) => {
         if (error) {
             console.error('Error al obtener datos de la base de datos:', error);
             res.status(500).send('Error al obtener datos de la base de datos.');
@@ -158,7 +158,7 @@ app.get('/graficas', (req, res) => {
 
 
 app.get('/gabinetes', (req, res) => {
-    mysql.query("SELECT modelo, precio, tienda, url, img, consumo FROM componentes WHERE tipo = 'gabinete'", (error, results, fields) => {
+    connection.query("SELECT modelo, precio, tienda, url, img, consumo FROM componentes WHERE tipo = 'gabinete'", (error, results, fields) => {
         if (error) {
             console.error('Error al obtener datos de la base de datos:', error);
             res.status(500).send('Error al obtener datos de la base de datos.');
@@ -170,7 +170,7 @@ app.get('/gabinetes', (req, res) => {
 
 app.post('/', (req, res) => {
     const data = req.body;
-    mysql.query('INSERT INTO componentes SET ?', data, (error, results, fields) => {
+    connection.query('INSERT INTO componentes SET ?', data, (error, results, fields) => {
         if (error) {
             console.error('Error al insertar datos en la base de datos:', error);
             res.status(500).send('Error al insertar datos en la base de datos.');
@@ -183,7 +183,7 @@ app.post('/', (req, res) => {
 app.post('/guardar-configuracion', (req, res) => {
     const config = req.body;
 
-    mysql.query('INSERT INTO configuraciones SET ?', { jsonConfig: JSON.stringify(config) }, (error, results, fields) => {
+    connection.query('INSERT INTO configuraciones SET ?', { jsonConfig: JSON.stringify(config) }, (error, results, fields) => {
         if (error) {
             console.error(error);
             res.status(500).send('Error interno del servidor');
@@ -200,7 +200,7 @@ app.post('/guardar-configuracion', (req, res) => {
 app.get('/recuperar-configuracion/:id', (req, res) => {
     const configId = req.params.id;
 
-    mysql.query('SELECT jsonConfig, fechaHora FROM configuraciones WHERE id = ?', configId, (error, results, fields) => {
+    connection.query('SELECT jsonConfig, fechaHora FROM configuraciones WHERE id = ?', configId, (error, results, fields) => {
         if (error) {
             console.error(error);
             res.status(500).send('Error interno del servidor');
@@ -221,7 +221,7 @@ app.get('/recuperar-configuracion/:id', (req, res) => {
 app.put('/:id', (req, res) => {
     const id = req.params.id;
     const data = req.body;
-    mysql.query('UPDATE componentes SET ? WHERE id = ?', [data, id], (error, results, fields) => {
+    connection.query('UPDATE componentes SET ? WHERE id = ?', [data, id], (error, results, fields) => {
         if (error) {
             console.error('Error al actualizar datos en la base de datos:', error);
             res.status(500).send('Error al actualizar datos en la base de datos.');
@@ -233,7 +233,7 @@ app.put('/:id', (req, res) => {
 
 app.delete('/:id', (req, res) => {
     const id = req.params.id;
-    mysql.query('DELETE FROM componentes WHERE id = ?', id, (error, results, fields) => {
+    connection.query('DELETE FROM componentes WHERE id = ?', id, (error, results, fields) => {
         if (error) {
             console.error('Error al eliminar datos de la base de datos:', error);
             res.status(500).send('Error al eliminar datos de la base de datos.');
