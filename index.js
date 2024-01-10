@@ -20,7 +20,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.all('/', (req, res) => {
     console.log("Just got a request!");
-    res.send('Yo!');
+    res.send('cotizador.cloud APi Works');
 });
 
 app.get('/componentes', (req, res) => {
