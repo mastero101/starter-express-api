@@ -1,7 +1,5 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const http = require('http');
-const fs = require('fs');
 const mysql = require('mysql');
 
 const dbConfig = {
@@ -13,29 +11,20 @@ const dbConfig = {
     ssl: true
 };
 
-const connection = mysql.createConnection(dbConfig);
-
-connection.connect((error) => {
-    if (error) {
-        console.error('Error al conectar con la base de datos:', error);
-        return;
-    }
-    console.log('Conexión exitosa con la base de datos.');
-});
+const pool = mysql.createPool(dbConfig);
 
 const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-  next();
+
+app.all('/', (req, res) => {
+    console.log("Just got a request!");
+    res.send('Yo!');
 });
 
-app.get('/', (req, res) => {
-    connection.query('SELECT * FROM componentes', (error, results, fields) => {
+app.get('/componentes', (req, res) => {
+    pool.query('SELECT * FROM componentes', (error, results, fields) => {
         if (error) {
             console.error('Error al obtener datos de la base de datos:', error);
             res.status(500).send('Error al obtener datos de la base de datos.');
@@ -47,7 +36,7 @@ app.get('/', (req, res) => {
 
 app.get('/usuarios/:id', (req, res) => {
     const id = req.params.id;
-    connection.query('SELECT * FROM componentes WHERE id = ?', id, (error, results, fields) => {
+    pool.query('SELECT * FROM componentes WHERE id = ?', id, (error, results, fields) => {
       if (error) {
         console.error('Error al obtener datos de la base de datos:', error);
         res.status(500).send('Error al obtener datos de la base de datos.');
@@ -65,7 +54,7 @@ app.get('/modelo/:modelo', (req, res) => {
     const modelo = req.params.modelo;
     const query = 'SELECT * FROM componentes WHERE modelo LIKE ?';
     const searchTerm = `%${modelo}%`;
-    connection.query(query, searchTerm, (error, results, fields) => {
+    pool.query(query, searchTerm, (error, results, fields) => {
       if (error) {
         console.error('Error al obtener datos de la base de datos:', error);
         res.status(500).send('Error al obtener datos de la base de datos.');
@@ -80,7 +69,7 @@ app.get('/modelo/:modelo', (req, res) => {
 });
 
 app.get('/procesadores', (req, res) => {
-    connection.query("SELECT modelo, precio, tienda, url, img, consumo, socket FROM componentes WHERE tipo = 'procesador'", (error, results, fields) => {
+    pool.query("SELECT modelo, precio, tienda, url, img, consumo, socket FROM componentes WHERE tipo = 'procesador'", (error, results, fields) => {
         if (error) {
             console.error('Error al obtener datos de la base de datos:', error);
             res.status(500).send('Error al obtener datos de la base de datos.');
@@ -91,7 +80,7 @@ app.get('/procesadores', (req, res) => {
 });
 
 app.get('/motherboards', (req, res) => {
-    connection.query("SELECT modelo, precio, tienda, url, consumo, socket, img, rams FROM componentes WHERE tipo = 'motherboard'", (error, results, fields) => { 
+    pool.query("SELECT modelo, precio, tienda, url, consumo, socket, img, rams FROM componentes WHERE tipo = 'motherboard'", (error, results, fields) => { 
         if (error) {
             console.error('Error al obtener datos de la base de datos:', error);
             res.status(500).send('Error al obtener datos de la base de datos.');
@@ -102,7 +91,7 @@ app.get('/motherboards', (req, res) => {
 });
 
 app.get('/rams', (req, res) => {
-    connection.query("SELECT modelo, precio, tienda, url, img, consumo, rams FROM componentes WHERE tipo = 'ram'", (error, results, fields) => {
+    pool.query("SELECT modelo, precio, tienda, url, img, consumo, rams FROM componentes WHERE tipo = 'ram'", (error, results, fields) => {
         if (error) {
             console.error('Error al obtener datos de la base de datos:', error);
             res.status(500).send('Error al obtener datos de la base de datos.');
@@ -113,7 +102,7 @@ app.get('/rams', (req, res) => {
 });
 
 app.get('/almacenamientos', (req, res) => {
-    connection.query("SELECT modelo, precio, tienda, url, ing, consumo FROM componentes WHERE tipo = 'almacenamiento'", (error, results, fields) => { 
+    pool.query("SELECT modelo, precio, tienda, url, ing, consumo FROM componentes WHERE tipo = 'almacenamiento'", (error, results, fields) => { 
         if (error) {
             console.error('Error al obtener datos de la base de datos:', error);
             res.status(500).send('Error al obtener datos de la base de datos.');
@@ -124,7 +113,7 @@ app.get('/almacenamientos', (req, res) => {
 });
 
 app.get('/disipadores', (req, res) => {
-    connection.query("SELECT modelo, precio, tienda, url, img, consumo FROM componentes WHERE tipo = 'disipador'", (error, results, fields) => {
+    pool.query("SELECT modelo, precio, tienda, url, img, consumo FROM componentes WHERE tipo = 'disipador'", (error, results, fields) => {
         if (error) {
             console.error('Error al obtener datos de la base de datos:', error);
             res.status(500).send('Error al obtener datos de la base de datos.');
@@ -135,7 +124,7 @@ app.get('/disipadores', (req, res) => {
 });
 
 app.get('/fuentes', (req, res) => {
-    connection.query("SELECT modelo, precio, tienda, url, consumo, img, potencia FROM componentes WHERE tipo = 'psu'", (error, results, fields) => {
+    pool.query("SELECT modelo, precio, tienda, url, consumo, img, potencia FROM componentes WHERE tipo = 'psu'", (error, results, fields) => {
         if (error) {
             console.error('Error al obtener datos de la base de datos:', error);
             res.status(500).send('Error al obtener datos de la base de datos.');
@@ -146,7 +135,7 @@ app.get('/fuentes', (req, res) => {
 });
 
 app.get('/graficas', (req, res) => {
-    connection.query("SELECT modelo, precio, tienda, url, img, consumo FROM componentes WHERE tipo = 'gpu'", (error, results, fields) => {
+    pool.query("SELECT modelo, precio, tienda, url, img, consumo FROM componentes WHERE tipo = 'gpu'", (error, results, fields) => {
         if (error) {
             console.error('Error al obtener datos de la base de datos:', error);
             res.status(500).send('Error al obtener datos de la base de datos.');
@@ -158,7 +147,7 @@ app.get('/graficas', (req, res) => {
 
 
 app.get('/gabinetes', (req, res) => {
-    connection.query("SELECT modelo, precio, tienda, url, img, consumo FROM componentes WHERE tipo = 'gabinete'", (error, results, fields) => {
+    pool.query("SELECT modelo, precio, tienda, url, img, consumo FROM componentes WHERE tipo = 'gabinete'", (error, results, fields) => {
         if (error) {
             console.error('Error al obtener datos de la base de datos:', error);
             res.status(500).send('Error al obtener datos de la base de datos.');
@@ -170,7 +159,7 @@ app.get('/gabinetes', (req, res) => {
 
 app.post('/', (req, res) => {
     const data = req.body;
-    connection.query('INSERT INTO componentes SET ?', data, (error, results, fields) => {
+    pool.query('INSERT INTO componentes SET ?', data, (error, results, fields) => {
         if (error) {
             console.error('Error al insertar datos en la base de datos:', error);
             res.status(500).send('Error al insertar datos en la base de datos.');
@@ -183,7 +172,7 @@ app.post('/', (req, res) => {
 app.post('/guardar-configuracion', (req, res) => {
     const config = req.body;
 
-    connection.query('INSERT INTO configuraciones SET ?', { jsonConfig: JSON.stringify(config) }, (error, results, fields) => {
+    pool.query('INSERT INTO configuraciones SET ?', { jsonConfig: JSON.stringify(config) }, (error, results, fields) => {
         if (error) {
             console.error(error);
             res.status(500).send('Error interno del servidor');
@@ -200,7 +189,7 @@ app.post('/guardar-configuracion', (req, res) => {
 app.get('/recuperar-configuracion/:id', (req, res) => {
     const configId = req.params.id;
 
-    connection.query('SELECT jsonConfig, fechaHora FROM configuraciones WHERE id = ?', configId, (error, results, fields) => {
+    pool.query('SELECT jsonConfig, fechaHora FROM configuraciones WHERE id = ?', configId, (error, results, fields) => {
         if (error) {
             console.error(error);
             res.status(500).send('Error interno del servidor');
@@ -221,7 +210,7 @@ app.get('/recuperar-configuracion/:id', (req, res) => {
 app.put('/:id', (req, res) => {
     const id = req.params.id;
     const data = req.body;
-    connection.query('UPDATE componentes SET ? WHERE id = ?', [data, id], (error, results, fields) => {
+    pool.query('UPDATE componentes SET ? WHERE id = ?', [data, id], (error, results, fields) => {
         if (error) {
             console.error('Error al actualizar datos en la base de datos:', error);
             res.status(500).send('Error al actualizar datos en la base de datos.');
@@ -233,7 +222,7 @@ app.put('/:id', (req, res) => {
 
 app.delete('/:id', (req, res) => {
     const id = req.params.id;
-    connection.query('DELETE FROM componentes WHERE id = ?', id, (error, results, fields) => {
+    pool.query('DELETE FROM componentes WHERE id = ?', id, (error, results, fields) => {
         if (error) {
             console.error('Error al eliminar datos de la base de datos:', error);
             res.status(500).send('Error al eliminar datos de la base de datos.');
@@ -243,6 +232,8 @@ app.delete('/:id', (req, res) => {
     });
 });
 
-app.listen(3000, '0.0.0.0', () => {
-    console.log('Servidor escuchando en el puerto 3000.');
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT}`);
 });
