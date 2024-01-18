@@ -3,9 +3,9 @@ const bodyParser = require('body-parser');
 const mysql = require('mysql');
 
 const dbConfig = {
-    host: 'aws.connect.psdb.cloud',
-    user: 'r4fblkpmkju1rjymd3h5',
-    password: 'pscale_pw_hXTnxbDmKN91HsZk16Qpx0jhv5fuIZEZtQhOYGrrk61',
+    host: 'us-east.connect.psdb.cloud',
+    user: 'z0p0g97bgdlb1fks54cw',
+    password: 'pscale_pw_d2N5Ce1GuLpho9qzzpIxCMeyddJcAVeic9sC9uhz0Vq',
     database: 'pcparts',
     port: 3306,
     ssl: true
