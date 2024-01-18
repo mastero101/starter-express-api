@@ -4,10 +4,11 @@ const mysql = require('mysql');
 
 const dbConfig = {
     host: 'aws.connect.psdb.cloud',
-    user: 'nzp7oyydgpqzovm31kmu',
-    password: 'pscale_pw_SSqcHViotKHkQRst0LVyT2GOEa3LOp1oxpoSRoKrBbP',
+    user: '63qex9bz9ro7pz0vvjr6',
+    password: 'pscale_pw_x0YmPcehtt4KYUQODey6LRKZF79BRft9BMGHTG1ZbmU',
     database: 'pcparts',
-    port: 3306
+    port: 3306,
+    ssl: true
 };
 
 const pool = mysql.createPool(dbConfig);
