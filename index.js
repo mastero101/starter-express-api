@@ -4,8 +4,8 @@ const mysql = require('mysql');
 
 const dbConfig = {
     host: 'aws.connect.psdb.cloud',
-    user: '63qex9bz9ro7pz0vvjr6',
-    password: 'pscale_pw_x0YmPcehtt4KYUQODey6LRKZF79BRft9BMGHTG1ZbmU',
+    user: 'r4fblkpmkju1rjymd3h5',
+    password: 'pscale_pw_hXTnxbDmKN91HsZk16Qpx0jhv5fuIZEZtQhOYGrrk61',
     database: 'pcparts',
     port: 3306,
     ssl: true
