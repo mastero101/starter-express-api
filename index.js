@@ -3,10 +3,10 @@ const bodyParser = require('body-parser');
 const mysql = require('mysql');
 
 const dbConfig = {
-    host: 'nodemysql12.mysql.database.azure.com',
-    user: 'mastero',
-    password: 'Alejandrof15',
-    database: 'test',
+    host: 'aws.connect.psdb.cloud',
+    user: 'nzp7oyydgpqzovm31kmu',
+    password: 'pscale_pw_SSqcHViotKHkQRst0LVyT2GOEa3LOp1oxpoSRoKrBbP',
+    database: 'pcparts',
     port: 3306,
     ssl: true
 };
