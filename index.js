@@ -7,8 +7,7 @@ const dbConfig = {
     user: 'nzp7oyydgpqzovm31kmu',
     password: 'pscale_pw_SSqcHViotKHkQRst0LVyT2GOEa3LOp1oxpoSRoKrBbP',
     database: 'pcparts',
-    port: 3306,
-    ssl: true
+    port: 3306
 };
 
 const pool = mysql.createPool(dbConfig);
