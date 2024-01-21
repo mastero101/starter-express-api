@@ -1,12 +1,13 @@
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
 
 const dbConfig = {
-    host: 'nodemysql12.mysql.database.azure.com',
-    user: 'mastero',
-    password: 'Alejandrof15',
-    database: 'test',
+    host: process.env.HOST,
+    user: process.env.USER,
+    password: process.env.PASSWORD,
+    database: process.env.DATABASE,
     port: 3306,
     ssl: true
 };
@@ -20,7 +21,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.all('/', (req, res) => {
     console.log("Just got a request!");
-    res.send('Yo!');
+    res.send('cotizador.cloud APi Works');
 });
 
 app.get('/componentes', (req, res) => {
@@ -102,7 +103,7 @@ app.get('/rams', (req, res) => {
 });
 
 app.get('/almacenamientos', (req, res) => {
-    pool.query("SELECT modelo, precio, tienda, url, ing, consumo FROM componentes WHERE tipo = 'almacenamiento'", (error, results, fields) => { 
+    pool.query("SELECT modelo, precio, tienda, url, img, consumo FROM componentes WHERE tipo = 'almacenamiento'", (error, results, fields) => { 
         if (error) {
             console.error('Error al obtener datos de la base de datos:', error);
             res.status(500).send('Error al obtener datos de la base de datos.');
