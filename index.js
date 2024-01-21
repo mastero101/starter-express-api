@@ -4,10 +4,10 @@ const bodyParser = require('body-parser');
 const mysql = require('mysql');
 
 const dbConfig = {
-    host: process.env.HOST,
-    user: process.env.USER,
-    password: process.env.PASSWORD,
-    database: process.env.DATABASE,
+    host: 'nodemysql12.mysql.database.azure.com',
+    user: 'mastero',
+    password: 'Alejandrof15',
+    database: 'test',
     port: 3306,
     ssl: true
 };
